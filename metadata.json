@@ -1,0 +1,8 @@
+{
+  "name": "Fondo Común — Juego de Coordinación",
+  "description": "Versión digital interactiva del juego de coordinación del Tercer Parcial (Equipo GMMB): 6 amigos, fondo común, dados de accidente y reparto a socios fieles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
