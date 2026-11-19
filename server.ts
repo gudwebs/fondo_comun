@@ -99,6 +99,17 @@ function wafMiddleware(req: Request, res: Response, next: NextFunction): void {
 }
 
 function rateLimitMiddleware(req: Request, res: Response, next: NextFunction): void {
+  // In dev mode, Vite loads many individual ES modules per page refresh
+  if (
+    !isProduction &&
+    (req.path.startsWith('/@') ||
+      req.path.startsWith('/node_modules/') ||
+      req.path.startsWith('/src/'))
+  ) {
+    next();
+    return;
+  }
+
   const ip = getClientIp(req);
   const now = Date.now();
   let bucket = rateBuckets.get(ip);
@@ -147,7 +158,10 @@ async function startServer(): Promise<void> {
   if (!isProduction) {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        allowedHosts: true,
+      },
       appType: 'spa',
     });
     app.use(vite.middlewares);
